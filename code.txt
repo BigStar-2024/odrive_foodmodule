@@ -1,0 +1,429 @@
+Center(
+                  child: Container(
+                    //width: 327,
+                    //height: 24,
+                    alignment: Alignment.center,
+                    child: Column(
+                      /*  mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start, */
+                      children: [
+                        Container(
+                          child: Column(
+                            /* mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start, */
+                            children: [
+                              Container(
+                                width: 327,
+                                child: Row(
+                                  /* mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center, */
+                                  children: [
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 24,
+                                            height: 24,
+                                            child: Stack(children: [
+                                              SvgPicture.asset(
+                                                'assets/suivi/order_receive.svg',
+                                                color: status == 6 &&
+                                                        driver_id == 0
+                                                    ? redColor
+                                                    : primaryColor,
+                                                // width: 200, // spécifiez la largeur si nécessaire
+                                                // height: 200, // spécifiez la hauteur si nécessaire
+                                              ),
+                                            ]),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height: 6,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status >= 2
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status >= 2
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status >= 2
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status >= 2
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status >= 2
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(),
+                                      child: Stack(children: [
+                                        SvgPicture.asset(
+                                          'assets/suivi/preparing.svg',
+                                          color: status >= 2
+                                              ? status == 6 && driver_id == 0
+                                                  ? redColor
+                                                  : primaryColor
+                                              : status == 6 && driver_id == 0
+                                                  ? redColor
+                                                  : Color(0xFF9CA4AB),
+                                          // width: 200, // spécifiez la largeur si nécessaire
+                                          // height: 200, // spécifiez la hauteur si nécessaire
+                                        )
+                                      ]),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height: 6,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: driver_id != 0 &&
+                                                        (status == 9 ||
+                                                            status == 6)
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: driver_id != 0
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: driver_id != 0 &&
+                                                        (status == 9 ||
+                                                            status == 6)
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: driver_id != 0 &&
+                                                        (status == 9 ||
+                                                            status == 6)
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: driver_id != 0 &&
+                                                        (status == 9 ||
+                                                            status == 6)
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(),
+                                      child: Stack(children: [
+                                        SvgPicture.asset(
+                                          'assets/suivi/man.svg',
+                                          color: driver_id != 0 &&
+                                                  (status == 9 || status == 6)
+                                              ? status == 6 && driver_id == 0
+                                                  ? redColor
+                                                  : primaryColor
+                                              : status == 6 && driver_id == 0
+                                                  ? redColor
+                                                  : Color(0xFF9CA4AB),
+                                          // width: 200, // spécifiez la largeur si nécessaire
+                                          // height: 200, // spécifiez la hauteur si nécessaire
+                                        )
+                                      ]),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height: 6,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status == 6
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status == 6
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status == 6
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                  color: status == 6
+                                                      ? status == 6 &&
+                                                              driver_id == 0
+                                                          ? redColor
+                                                          : primaryColor
+                                                      : status == 6 &&
+                                                              driver_id == 0
+                                                          ? redColor
+                                                          : Color(0xFF9CA4AB),
+                                                  shape: CircleBorder()),
+                                            ),
+                                            const SizedBox(width: 7),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: ShapeDecoration(
+                                                color: status == 6
+                                                    ? status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : primaryColor
+                                                    : status == 6 &&
+                                                            driver_id == 0
+                                                        ? redColor
+                                                        : Color(0xFF9CA4AB),
+                                                shape: CircleBorder(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(),
+                                      child: Stack(children: [
+                                        SvgPicture.asset(
+                                          'assets/suivi/done.svg',
+                                          color: status == 6
+                                              ? status == 6 && driver_id == 0
+                                                  ? redColor
+                                                  : primaryColor
+                                              : status == 6 && driver_id == 0
+                                                  ? redColor
+                                                  : Color(0xFF9CA4AB),
+                                          // width: 200, // spécifiez la largeur si nécessaire
+                                          // height: 200, // spécifiez la hauteur si nécessaire
+                                        )
+                                      ]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),

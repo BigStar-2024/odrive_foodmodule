@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "136360441210",
+    "project_id": "odriveowner",
+    "storage_bucket": "odriveowner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136360441210:android:c319b632a5b105833092c3",
+        "android_client_info": {
+          "package_name": "com.example.deliveryboy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB37UPcviRtOUH6o-otBFxnnpEOrejwgl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136360441210:android:61499ad2ab6c00923092c3",
+        "android_client_info": {
+          "package_name": "com.odrive.odrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB37UPcviRtOUH6o-otBFxnnpEOrejwgl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136360441210:android:08f0d0e3cc3d9b1c3092c3",
+        "android_client_info": {
+          "package_name": "com.odrive.odriverestaurant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB37UPcviRtOUH6o-otBFxnnpEOrejwgl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
