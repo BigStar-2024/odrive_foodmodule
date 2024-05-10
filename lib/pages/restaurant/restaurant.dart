@@ -4,11 +4,19 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:odrive/backend/api.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
+import 'package:odrive/components/statuscarousel.dart';
 import 'package:odrive/pages/home/home.dart';
 import 'package:odrive/pages/restaurant/restaurant_information.dart';
 import 'package:odrive/pages/restaurant/reviews.dart';
+import 'package:odrive/pages/restaurant/storyview.dart';
 import 'package:odrive/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:story_view/story_view.dart';
+
+import '../../components/bottombar.dart';
+import '../../components/buttoncheckout.dart';
+import '../../components/foodcard.dart';
 
 class RestaurantScreen extends StatefulWidget {
   final int id_restaurant;
@@ -30,6 +38,7 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreenState extends State<RestaurantScreen> {
   bool _loading = true;
   Map<String, dynamic> restaurantData = {};
+  List<dynamic> restaurantStatusData = [];
   List<dynamic> foods = [];
   List<dynamic> foodsFiltre = [];
   int selectedCategory = 0;
@@ -43,6 +52,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   @override
   void initState() {
     _getRestaurant(widget.id_restaurant);
+    _getStatusRestaurant(widget.id_restaurant);
     _getFavorite();
     // TODO: implement initState
     super.initState();
@@ -125,6 +135,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     });
   }
 
+  _getStatusRestaurant(id_restaurant) async {
+    var restaurant_call = await getStatusRestaurant(id_restaurant.toString());
+    setState(() {
+      restaurantStatusData = restaurant_call;
+    });
+  }
+
   List<dynamic> getFoodsByCategoryId(int categoryId, List<dynamic> foods) {
     return foods.where((food) => food["category"] == categoryId).toList();
   }
@@ -143,24 +160,57 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       children: [
                         Stack(children: [
                           Container(
-                            height: size.height / 4 + 35,
+                            height: size.height / 4 + 40,
                           ),
                           MyHeader(
                             image: restaurantData["restaurant"]["image"],
                           ),
-                          Positioned(
-                            bottom: -4,
-                            left: 20,
-                            child: CircleAvatar(
-                              radius: 59,
-                              backgroundColor: Colors.white,
+
+                          restaurantStatusData.isNotEmpty ? (
+                            Positioned(
+                              bottom: 0,
+                              left: 20,
                               child: CircleAvatar(
-                                radius: 55,
-                                backgroundImage: NetworkImage(
-                                    "$serverImages${restaurantData["restaurant"]["image"]}"),
+                                radius: 40,
+                                backgroundColor: Colors.white,
+                                child: GestureDetector(
+                                  onTap: () async{
+                                    if(restaurantStatusData.isNotEmpty){
+                                      final controller = StoryController();
+                                      List<StoryItem> storyItems = restaurantStatusData.map((status){
+                                        if(status["media_type"] == "image"){
+                                          return StoryItem.pageImage(url: "$serverImages${status["media_url"]}", controller: controller, caption: status["content"]);
+                                        }
+                                        else if(status["media_type"] == "video"){
+                                          return StoryItem.pageVideo("$serverImages${status["media_url"]}", controller: controller, caption: status["content"]);
+                                        }
+                                        else{
+                                          return StoryItem.text(title: status["content"], backgroundColor: Theme.of(context).primaryColor);
+                                        }
+                                      }).toList();
+                                      // print(storyItems);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoryRestaurantScreen(
+                                                    storyItems: storyItems,
+                                                    storyController: controller
+                                                  )
+                                          )
+                                      );
+                                    }
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 36,
+                                    backgroundImage: NetworkImage(
+                                        "$serverImages${restaurantStatusData[0]["media_url"]}"),
+                                  ),
+                                )
                               ),
-                            ),
-                          ),
+                            )
+                          ) : (Container()),
+
                           Positioned(
                             top: 40,
                             left: 20,
@@ -199,15 +249,12 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                   ),
                                   Icon(
                                     Icons.favorite_border,
-                                    color: greyScale70Color,
-                                    size: 35,
+                                    color: heartColor,
+                                    size: 30,
                                   )
                                 ],
                               ),
-                              SizedBox(
-                                width: 20,
-                                height: 20,
-                              ),
+                              SizedBox(height: 8),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -219,7 +266,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                         style: text14GrayScale100,
                                       ),
                                       SizedBox(
-                                        height: 10,
+                                        height: 4,
                                       ),
                                       Text(
                                         "Ouvert",
@@ -241,14 +288,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                     child: Icon(
                                       Icons.info_outline,
                                       color: blackColor,
-                                      size: 35,
+                                      size: 30,
                                     ),
                                   )
                                 ],
-                              ),
-                              SizedBox(
-                                width: 20,
-                                height: 20,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -259,13 +302,20 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                       Icon(
                                         Icons.star,
                                         color: Colors.yellow,
-                                        size: 30,
+                                        size: 24,
                                       ),
                                       Text("4.8 (1.2k)"),
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Image.asset("assets/home/panier.png"),
+                                      Icon(
+                                        Icons.shopping_basket_outlined,
+                                        color: Colors.black,
+                                        size: 24,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
                                       Text("99+ commandes")
                                     ],
                                   ),
@@ -293,6 +343,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                   )
                                 ],
                               ),
+                              SizedBox(height: 24),
                               HorizontalCategoryList(
                                 categoryData: restaurantData["categories"],
                                 selectName: SelectedName,
@@ -382,21 +433,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   : Container(),
             ),
           ),
-          _loading
-              ? Center(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.5),
-                    height: size
-                        .height, // Ajustez la hauteur du loader selon vos besoins
-                    child: Center(
-                      child: SpinKitThreeBounce(
-                        color: primaryColor,
-                        size: 30.0,
-                      ),
-                    ),
-                  ),
-                )
-              : Container(),
+          _loading ? LoadingWidget() : Container(),
           panierExist
               ? Positioned(
                   bottom: 15, // Aligner en bas de la page
@@ -508,12 +545,16 @@ Widget buildCardColumn(List<dynamic> dataList, double lat, double lng, largeur,
 
 Widget buildCard(dynamic data, double lat, double lng, largeur, taxe,
     favoriteData, updateItemCount) {
+
   return Container(
-    //width: 250, // Ajustez la largeur selon vos besoins
+    width: largeur,
+    height: 250,
+    padding: EdgeInsets.symmetric(vertical: 4),
     // Ajoutez une marge entre les cartes
     child: ClipRRect(
       borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
-      child: FoodCard(
+      child:
+      FoodCard(
         name: data['name']!,
         image: data['image']!,
         price: data['price']!,

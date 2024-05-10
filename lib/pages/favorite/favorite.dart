@@ -6,10 +6,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:odrive/backend/api.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/pages/commande/commandes.dart';
+import 'package:odrive/pages/food/food.dart';
 import 'package:odrive/pages/home/home.dart';
 import 'package:odrive/themes/theme.dart';
+
+import '../../components/appbar.dart';
+import '../restaurant/restaurant.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -21,6 +26,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   dynamic favoriteData;
   bool _loading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,357 +59,376 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: MyAppBar(titleText: "Favorie"),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                    children: favoriteData != null &&
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Stack(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                        children: favoriteData != null &&
                             favoriteData.containsKey("food")
-                        ? favoriteData["food"].isNotEmpty
+                            ? favoriteData["food"].isNotEmpty
                             ? favoriteData["food"].map<Widget>((foodItem) {
-                                return Card(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 92,
-                                        height: 92,
-                                        decoration: ShapeDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                "$serverImages${foodItem["image"]}"),
-                                            fit: BoxFit.fill,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          //height: double.infinity,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
+                          return Card(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 92,
+                                  height: 92,
+                                  decoration: ShapeDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "$serverImages${foodItem["image"]}"),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                    //height: double.infinity,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: double.infinity,
+                                          child: Row(
+                                            mainAxisSize:
+                                            MainAxisSize.min,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            MainAxisAlignment
+                                                .spaceBetween,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: double.infinity,
-                                                child: Row(
+                                                //width: 150,
+                                                //height: 49,
+                                                padding:
+                                                const EdgeInsets.only(
+                                                    top: 4, left: 4),
+                                                child: Column(
                                                   mainAxisSize:
-                                                      MainAxisSize.min,
+                                                  MainAxisSize.min,
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                  CrossAxisAlignment
+                                                      .start,
                                                   children: [
-                                                    Container(
-                                                      //width: 150,
-                                                      //height: 49,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 4, left: 4),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            foodItem["name"],
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF171725),
-                                                              fontSize: 16,
-                                                              fontFamily:
-                                                                  'Abel',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 4),
-                                                          Text(
-                                                            foodItem[
-                                                                "restaurantName"],
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF616161),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  'Abel',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                    Text(
+                                                      foodItem["name"],
+                                                      style: TextStyle(
+                                                        color: Color(
+                                                            0xFF171725),
+                                                        fontSize: 16,
+                                                        fontFamily:
+                                                        'Abel',
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
                                                       ),
                                                     ),
-                                                    const SizedBox(width: 12),
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        setState(() {
-                                                          favoriteData["food"]
-                                                              .removeWhere(
-                                                                  (favoriteItem) =>
-                                                                      favoriteItem[
-                                                                          "id"] ==
-                                                                      foodItem[
-                                                                          "id"]);
-                                                        });
-                                                        print(foodItem["id"]);
-                                                        print(
-                                                            "idddddddddddddd");
-                                                        var response =
-                                                            await deleteFavorite(
-                                                                foodItem["id"]);
-                                                        if (response["error"] ==
-                                                            "0") {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "plat supprimé des favories");
-                                                        } else {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "Une erreur s'est produite");
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        width: 24,
-                                                        height: 24,
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              width: 24,
-                                                              height: 24,
-                                                              child: Stack(
-                                                                  children: [
-                                                                    //YOANE
-                                                                    SvgPicture
-                                                                        .asset(
-                                                                            "assets/favorie/heart.svg")
-                                                                  ]),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                    const SizedBox(
+                                                        height: 4),
+                                                    Text(
+                                                      foodItem[
+                                                      "restaurantName"],
+                                                      style: TextStyle(
+                                                        color: Color(
+                                                            0xFF616161),
+                                                        fontSize: 12,
+                                                        fontFamily:
+                                                        'Abel',
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              const SizedBox(height: 12),
-                                              Container(
-                                                width: double.infinity,
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      width: 12,
-                                                      height: 12,
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 1,
-                                                          vertical: 1.25),
+                                              const SizedBox(width: 12),
+                                              Container(child: Column(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      setState(() {
+                                                        favoriteData["food"]
+                                                            .removeWhere(
+                                                                (favoriteItem) =>
+                                                            favoriteItem[
+                                                            "id"] ==
+                                                                foodItem[
+                                                                "id"]);
+                                                      });
+                                                      print(foodItem["id"]);
+                                                      print(
+                                                          "idddddddddddddd");
+                                                      var response =
+                                                      await deleteFavorite(
+                                                          foodItem["id"]);
+                                                      if (response["error"] ==
+                                                          "0") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                            "plat supprimé des favories");
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                            "Une erreur s'est produite");
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: 24,
+                                                      height: 24,
                                                       child: Row(
                                                         mainAxisSize:
-                                                            MainAxisSize.min,
+                                                        MainAxisSize.min,
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                         children: [
-                                                          SvgPicture.asset(
-                                                              "assets/favorie/star.svg")
+                                                          Container(
+                                                            width: 24,
+                                                            height: 24,
+                                                            child: Stack(
+                                                                children: [
+                                                                  //YOANE
+                                                                  Icon(
+                                                                    Icons.favorite,
+                                                                    color: heartColor,
+                                                                  )
+                                                                ]),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
-                                                    const SizedBox(width: 4),
-                                                    Text(
-                                                      '4.8',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xFF66707A),
-                                                        fontSize: 14,
-                                                        fontFamily: 'Abel',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 4),
-                                                    Text(
-                                                      '(1.2k)',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xFF78828A),
-                                                        fontSize: 14,
-                                                        fontFamily: 'Abel',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 4),
-                                                    Text(
-                                                      'I',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xFF66707A),
-                                                        fontSize: 14,
-                                                        fontFamily: 'Abel',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 4),
-                                                    Text(
-                                                      '1,5 km',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xFF66707A),
-                                                        fontSize: 14,
-                                                        fontFamily: 'Abel',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
+                                                  ),
+                                                ],
+                                              ))
+
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Container(
+                                          width: double.infinity,
+                                          child: Row(
+                                            mainAxisSize:
+                                            MainAxisSize.min,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 12,
+                                                height: 12,
+                                                padding: const EdgeInsets
+                                                    .symmetric(
+                                                    horizontal: 1,
+                                                    vertical: 1.25),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        "assets/favorie/star.svg")
                                                   ],
                                                 ),
                                               ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                '4.8',
+                                                style: TextStyle(
+                                                  color:
+                                                  Color(0xFF66707A),
+                                                  fontSize: 14,
+                                                  fontFamily: 'Abel',
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                '(1.2k)',
+                                                style: TextStyle(
+                                                  color:
+                                                  Color(0xFF78828A),
+                                                  fontSize: 14,
+                                                  fontFamily: 'Abel',
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                'I',
+                                                style: TextStyle(
+                                                  color:
+                                                  Color(0xFF66707A),
+                                                  fontSize: 14,
+                                                  fontFamily: 'Abel',
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                '1,5 km',
+                                                style: TextStyle(
+                                                  color:
+                                                  Color(0xFF66707A),
+                                                  fontSize: 14,
+                                                  fontFamily: 'Abel',
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                ),
+                                              ),
+
                                             ],
                                           ),
                                         ),
-                                      ),
-                                      Transform(
-                                        transform: Matrix4.identity()
-                                          ..translate(0.0, 0.0)
-                                          ..rotateZ(3.14),
-                                        child: Container(
-                                          width: 33,
-                                          height: 92,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              //Icon(Icons.arrow_forward_ios)
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                );
-                              }).toList()
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                  child: Container(
+                                    width: 33,
+                                    height: 92,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            // Navigator.push(
+                                            // context,
+                                            // MaterialPageRoute(
+                                            //   builder: (context) => RestaurantScreen(
+                                            //   id_restaurant: foodItem["restaurant"],
+                                            //   latitude: double.parse(foodItem["restaurantLat"]),
+                                            //   longitude: double.parse(foodItem["restaurantLng"]),
+                                            //   taxe: "0")),
+                                            // );
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => FoodScreen(
+                                                      id_food: foodItem["id"],
+                                                      data: foodItem,
+                                                      taxe: "0")),
+                                            );
+                                          },
+                                          child: Container(
+                                            child: Icon(
+                                                Icons.arrow_forward_ios_rounded
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList()
                             : [
-                                _loading
-                                    ? Text("")
-                                    : Container(
-                                        width: 327,
-                                        height: 216,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 100,
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "assets/favorie/smile.gif"),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 12),
-                                            SizedBox(
-                                              width: double.infinity,
-                                              child: Text(
-                                                'Aucun Favorie',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color(0xFF03443C),
-                                                  fontSize: 24,
-                                                  fontFamily: 'Abel',
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 12),
-                                            SizedBox(
-                                              width: double.infinity,
-                                              child: Text(
-                                                'Désolé votre liste de favorie est vide',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color(0xFF78828A),
-                                                  fontSize: 18,
-                                                  fontFamily: 'Abel',
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                              ]
-                        : [Text("")]),
-              ),
+                          _loading
+                              ? Text("")
+                              : Container(
+                            width: 327,
+                            height: 216,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/favorie/smile.gif"),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Text(
+                                    'Aucun Favorie',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xFF03443C),
+                                      fontSize: 24,
+                                      fontFamily: 'Abel',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Text(
+                                    'Désolé votre liste de favorie est vide',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xFF78828A),
+                                      fontSize: 18,
+                                      fontFamily: 'Abel',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ]
+                            : [Text("")]),
+                  ),
+                ),
+              ],
             ),
-            _loading
-                ? Center(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      height: size
-                          .height, // Ajustez la hauteur du loader selon vos besoins
-                      child: Center(
-                        child: SpinKitThreeBounce(
-                          color: primaryColor,
-                          size: 30.0,
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
-        ),
+          ),
+          _loading ? LoadingWidget() : Container(),
+        ],
       ),
       bottomNavigationBar: MyBottomBarFavorite(),
     );

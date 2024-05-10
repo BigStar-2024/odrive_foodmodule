@@ -10,6 +10,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:odrive/backend/api.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
+import 'package:odrive/constante/utils.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/pages/panier/panier.dart';
 import 'package:odrive/pages/suivieLivreur/suivieLivreur.dart';
@@ -453,7 +455,7 @@ class _SuivieScreenState extends State<SuivieScreen> {
                 image: food["image"],
                 count: food["count"],
                 countExtras: food["extrascount"],
-                desc: food["desc"],
+                desc: food["desc"] ?? "",
                 extras: food["extrasdata"]))
             .toList();
       });
@@ -1076,8 +1078,8 @@ class _SuivieScreenState extends State<SuivieScreen> {
                             Stack(
                               children: [
                                 Container(
-                                  width: 85.0,
-                                  height: 85,
+                                  width: 100.0,
+                                  height: 100.0,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
                                     image: DecorationImage(
@@ -1088,14 +1090,16 @@ class _SuivieScreenState extends State<SuivieScreen> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: 0,
-                                  left: 0,
+                                  top: 4,
+                                  left: 4,
                                   child: ClipRRect(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                     child: Container(
+                                      color: greyColor900,
+                                      padding: EdgeInsets.all(4),
                                       child: Text(
-                                        "X${foodItem.count}",
+                                        "x${foodItem.count}",
                                         style: TextStyle(color: blackColor),
                                       ),
                                     ),
@@ -1103,7 +1107,7 @@ class _SuivieScreenState extends State<SuivieScreen> {
                                 )
                               ],
                             ),
-                            SizedBox(width: 16.0),
+                            SizedBox(width: 10.0),
                             // Textes au milieu en 3 colonnes
                             Expanded(
                               child: Column(
@@ -1118,12 +1122,7 @@ class _SuivieScreenState extends State<SuivieScreen> {
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    '',
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                  SizedBox(height: 8.0),
-                                  Text(
-                                    '${foodItem.desc}',
+                                    sliceString('${foodItem.desc}', 50),
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   SizedBox(
@@ -1173,7 +1172,7 @@ class _SuivieScreenState extends State<SuivieScreen> {
                             ),
                             Text(
                               '${foodItem.totalPrice} F',
-                              style: TextStyle(fontSize: 14.0),
+                              style: TextStyle(fontSize: 14.0, color: primaryColor),
                             ),
                             // Bouton en bas à droite
                           ],
@@ -1306,9 +1305,9 @@ class _SuivieScreenState extends State<SuivieScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
                       /* Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -1338,15 +1337,24 @@ class _SuivieScreenState extends State<SuivieScreen> {
                               // Ouvrez le fichier PDF avec l'application par défaut
                               OpenFile.open(filePath);
                             },
-                            child: Text(
-                              "Télécharger le reçu",
-                              style: TextStyle(color: Colors.blue),
-                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Télécharger le reçu",
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.blue,
+                                  size: 18,
+                                )
+                              ],
+                            )
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 100,
+                        height: 40,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -1410,26 +1418,11 @@ class _SuivieScreenState extends State<SuivieScreen> {
                       )
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
+                )
               ],
             ),
             _loading
-                ? Center(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      height: size
-                          .height, // Ajustez la hauteur du loader selon vos besoins
-                      child: Center(
-                        child: SpinKitThreeBounce(
-                          color: primaryColor,
-                          size: 30.0,
-                        ),
-                      ),
-                    ),
-                  )
+                ? LoadingWidget()
                 : Container(),
           ],
         ),

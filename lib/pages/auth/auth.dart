@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:odrive/components/loading.dart';
+import 'package:odrive/components/loginbuttons.dart';
 import 'package:odrive/themes/theme.dart';
+import 'package:odrive/localization/Language/languages.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -11,6 +14,14 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  bool _loading = false;
+
+  setLoading(bool status){
+    setState(() {
+      _loading = status;
+    });
+  }
+
   connexionBtn(size) {
     return GestureDetector(
       onTap: () {
@@ -18,178 +29,86 @@ class _AuthScreenState extends State<AuthScreen> {
         Navigator.pushNamed(context, '/login');
       },
       child: Container(
-        width: size.width - size.width / 5,
+        width: size.width - fixPadding * 4,
         height: 50,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: primaryColor),
+            borderRadius: BorderRadius.circular(20),
+            color: Theme.of(context).primaryColor
+        ),
         child: Center(
           child: Text(
-            'Sign in',
-            style: text16White,
+            Languages.of(context)!.labelSignup,
+            style: Theme.of(context).textTheme.titleSmall
           ),
         ),
       ),
-    );
-  }
-
-  connexionFbBtn(size) {
-    return Container(
-      width: size.width - size.width / 5,
-      height: 50,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Color(0xFF415792)),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons
-                  .facebook, // Remplacez par l'icône que vous souhaitez utiliser
-              color: Colors.white,
-            ),
-            SizedBox(width: 10),
-            Text(
-              'Continuer avec Facebook',
-              style: text16White,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  connexionGlBtn(size) {
-    return Container(
-      width: size.width - size.width / 5,
-      height: 50,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Color(0xFF5384EE)),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/auth/google.png"),
-            SizedBox(width: 10),
-            Text(
-              'Continuer avec Google',
-              style: text16White,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  connexionApBtn(size) {
-    return Container(
-      width: size.width - size.width / 5,
-      height: 50,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: blackColor),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/auth/apple.png"),
-            SizedBox(width: 10),
-            Text(
-              'Continuer avec Apple',
-              style: text16White,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  horizontalRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 100.0,
-          height: 1.0, // Hauteur de la première ligne horizontale
-          color: greyColor,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text('ou'),
-        ),
-        Container(
-          width: 100.0,
-          height: 1.0, // Hauteur de la deuxième ligne horizontale
-          color: greyColor,
-        ),
-      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/auth/background.png'), // Remplacez par le chemin de votre image
-                fit: BoxFit.fill,
+          Positioned(
+            top: 0,
+            left: 0,
+            width: size.width,
+            child: Image.asset(
+              'assets/auth/background.png', // Replace with your image asset
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            width: MediaQuery.of(context).size.width,
+            height: size.height * 0.8,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  stops: [0.25, 0.4, 1.0],
+                  colors: [Theme.of(context).backgroundColor.withOpacity(0), Theme.of(context).backgroundColor.withOpacity(0.8), Theme.of(context).backgroundColor],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                stops: [0.25, 1.0],
-                colors: [Colors.transparent, Colors.white],
-                begin: Alignment.topCenter,
-                end: Alignment.center,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: size.height / 5),
+            margin: EdgeInsets.only(top: size.height / 10),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/splash/odrive_1.png', // Remplacez par le chemin de votre image
-                    width: 200.0, // Ajustez la largeur selon vos besoins
-                    height: 200.0, // Ajustez la hauteur selon vos besoins
+                    'assets/splash/tyms.png',
                   ),
-                  SizedBox(
-                      height:
-                          20.0), // Ajoutez un espace entre l'image et le bouton
                   connexionBtn(size),
                   heightSpace,
                   heightSpace,
-                  horizontalRow(),
-                  heightSpace,
-                  heightSpace,
-                  connexionGlBtn(size),
-                  heightSpace,
-                  heightSpace,
-                  connexionFbBtn(size),
-                  heightSpace,
-                  heightSpace,
-                  connexionApBtn(size),
+                  LoginButtonsWidget(setLoading: setLoading),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Pas encore de compte?",
-                        style: text14GrayScale100,
+                        Languages.of(context)!.textNoAccount,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontSize: 16.0,
+                        ),
                       ),
                       TextButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/register');
                           },
                           child: Text(
-                            "S'inscrire",
-                            style: text14WhitePrimary,
+                            Languages.of(context)!.labelSignup,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              decoration: TextDecoration.underline
+                            ),
                           ))
                     ],
                   )
@@ -197,17 +116,9 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
             ),
           ),
-          /* Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/splash/odrive_1.png",
-                  height: size.height * 0.1,
-                  fit: BoxFit.cover,
-                ),
-              ],
-            ),
-          ) */
+          _loading
+              ? LoadingWidget()
+              : Container(),
         ],
       ),
     );

@@ -12,7 +12,20 @@
           "package_name": "com.example.deliveryboy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "136360441210-dkp6osid4knimokphqb3ijo6enat86g6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.deliveryboy",
+            "certificate_hash": "d923ad21bc414a7938c47c34f1845fac6861f86c"
+          }
+        },
+        {
+          "client_id": "136360441210-gpqe2iegmlqk125vj02i5ikapr40djn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB37UPcviRtOUH6o-otBFxnnpEOrejwgl8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136360441210-gpqe2iegmlqk125vj02i5ikapr40djn8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "136360441210-mg0pv1af8g2jeqbvr43q4ilget8p6283.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.odrive.odrive"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +56,28 @@
           "package_name": "com.odrive.odrive"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "136360441210-bggkc1337e77ajc2bvleejt110kvavvk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.odrive.odrive",
+            "certificate_hash": "a50d6cc9aa7021b31ea824d2c4d4a8bf1067e1b7"
+          }
+        },
+        {
+          "client_id": "136360441210-n6p72aqk94341pk0j8j83gbsbgnr8q94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.odrive.odrive",
+            "certificate_hash": "d923ad21bc414a7938c47c34f1845fac6861f86c"
+          }
+        },
+        {
+          "client_id": "136360441210-gpqe2iegmlqk125vj02i5ikapr40djn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB37UPcviRtOUH6o-otBFxnnpEOrejwgl8"
@@ -39,7 +85,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136360441210-gpqe2iegmlqk125vj02i5ikapr40djn8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "136360441210-mg0pv1af8g2jeqbvr43q4ilget8p6283.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.odrive.odrive"
+              }
+            }
+          ]
         }
       }
     },
@@ -50,7 +108,12 @@
           "package_name": "com.odrive.odriverestaurant"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "136360441210-gpqe2iegmlqk125vj02i5ikapr40djn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB37UPcviRtOUH6o-otBFxnnpEOrejwgl8"
@@ -58,7 +121,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136360441210-gpqe2iegmlqk125vj02i5ikapr40djn8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "136360441210-mg0pv1af8g2jeqbvr43q4ilget8p6283.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.odrive.odrive"
+              }
+            }
+          ]
         }
       }
     }

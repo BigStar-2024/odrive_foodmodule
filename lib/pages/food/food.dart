@@ -4,11 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/pages/home/home.dart';
 import 'package:odrive/pages/restaurant/restaurant.dart';
 import 'package:odrive/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../components/appbar.dart';
 
 class FoodScreen extends StatefulWidget {
   final int id_food;
@@ -204,10 +207,10 @@ class _FoodScreenState extends State<FoodScreen> {
         //Navigator.pushReplacementNamed(context, '/login');
       },
       child: Container(
-        width: size.width - size.width / 5,
+        // width: size.width - size.width / 5,
         height: 50,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: primaryColor),
+            borderRadius: BorderRadius.circular(30), color: primaryColor),
         child: Center(
           child: Text(
             'Ajouter au panier',
@@ -225,115 +228,119 @@ class _FoodScreenState extends State<FoodScreen> {
       appBar: MyAppBar(
         titleText: 'Option',
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Stack(
               children: [
-                MyHeader(
-                  image: widget.data["image"],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
+                  children: [
+                    MyHeader(
+                      image: widget.data["image"],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
                         children: [
-                          Text(
-                            widget.data["name"],
-                            style: text24GreyScale100,
-                          ),
-                          Text(
-                            '\F ${double.parse(price).toInt()}',
-                            style: text18Primary,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        widget.data["desc"],
-                        style: text14GrayScale70,
-                      ),
-                      SizedBox(
-                        height: 55,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Quantité",
-                            style: text16GrayScale100,
-                          ),
-                          Container(
-                            width: 100,
-                            height: 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color:
-                                      greyScale60Color, // Couleur de la bordure
-                                  width: 1.0, // Épaisseur de la bordure
-                                ),
-                                color: whiteColor),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      if (count > 1) {
-                                        decrementCount();
-                                      }
-                                    },
-                                    child: Icon(Icons.remove),
-                                  ),
-                                  Text(
-                                    '$count',
-                                    style: text16GrayScale100,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      incrementCount();
-                                    },
-                                    child: Icon(Icons.add),
-                                  ),
-                                ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.data["name"],
+                                style: text24GreyScale100,
                               ),
+                              Text(
+                                '\F ${double.parse(price).toInt()}',
+                                style: text18Primary,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            widget.data["desc"],
+                            style: text14GrayScale70,
+                          ),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Quantité",
+                                style: text16GrayScale100,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                width: 100,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color:
+                                      greyScale60Color, // Couleur de la bordure
+                                      width: 1.0, // Épaisseur de la bordure
+                                    ),
+                                    color: whiteColor),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (count > 1) {
+                                            decrementCount();
+                                          }
+                                        },
+                                        child: Icon(Icons.remove),
+                                      ),
+                                      Text(
+                                        '$count',
+                                        style: text16GrayScale100,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          incrementCount();
+                                        },
+                                        child: Icon(Icons.add),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 16),
+
+                          if (widget.data["variants"].isNotEmpty)
+                            Divider(
+                              color: greyScale70Color, // Couleur de la ligne
+                              thickness: 1, // Épaisseur de la ligne
                             ),
-                          )
-                        ],
-                      ),
-                      Divider(
-                        color: greyScale70Color, // Couleur de la ligne
-                        thickness: 1, // Épaisseur de la ligne
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      if (widget.data["variants"].isNotEmpty)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Taille"),
+                          if (widget.data["variants"].isNotEmpty)
+                            SizedBox(
+                              height: 16,
+                            ),
+                          if (widget.data["variants"].isNotEmpty)
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                for (var variant in widget.data["variants"])
-                                  variant["name"] == "S"
-                                      ? GestureDetector(
+                                Text("Taille"),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    for (var variant in widget.data["variants"])
+                                      variant["name"] == "S"
+                                          ? GestureDetector(
                                           onTap: () {
                                             setState(() {
                                               taille = variant["name"];
                                               if (double.parse(
-                                                          variant["dprice"])
-                                                      .toInt() ==
+                                                  variant["dprice"])
+                                                  .toInt() ==
                                                   0) {
                                                 price = variant["price"];
                                               } else {
@@ -344,49 +351,49 @@ class _FoodScreenState extends State<FoodScreen> {
                                           child: _buildSizeCircle(
                                               variant["name"],
                                               isSelected: taille == "S"))
-                                      : variant["name"] == "X"
+                                          : variant["name"] == "X"
                                           ? GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  taille = variant["name"];
-                                                  if (double.parse(
-                                                              variant["dprice"])
-                                                          .toInt() ==
-                                                      0) {
-                                                    price = variant["price"];
-                                                  } else {
-                                                    price = variant["dprice"];
-                                                  }
-                                                });
-                                              },
-                                              child: _buildSizeCircle(
-                                                  variant["name"],
-                                                  isSelected: taille == "X"),
-                                            )
+                                        onTap: () {
+                                          setState(() {
+                                            taille = variant["name"];
+                                            if (double.parse(
+                                                variant["dprice"])
+                                                .toInt() ==
+                                                0) {
+                                              price = variant["price"];
+                                            } else {
+                                              price = variant["dprice"];
+                                            }
+                                          });
+                                        },
+                                        child: _buildSizeCircle(
+                                            variant["name"],
+                                            isSelected: taille == "X"),
+                                      )
                                           : variant["name"] == "XL"
-                                              ? GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      taille = variant["name"];
-                                                      if (double.parse(variant[
-                                                                  "dprice"])
-                                                              .toInt() ==
-                                                          0) {
-                                                        price =
-                                                            variant["price"];
-                                                      } else {
-                                                        price =
-                                                            variant["dprice"];
-                                                      }
-                                                    });
-                                                  },
-                                                  child: _buildSizeCircle(
-                                                      variant["name"],
-                                                      isSelected:
-                                                          taille == "XL"),
-                                                )
-                                              : Container()
-                                /* Container(
+                                          ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            taille = variant["name"];
+                                            if (double.parse(variant[
+                                            "dprice"])
+                                                .toInt() ==
+                                                0) {
+                                              price =
+                                              variant["price"];
+                                            } else {
+                                              price =
+                                              variant["dprice"];
+                                            }
+                                          });
+                                        },
+                                        child: _buildSizeCircle(
+                                            variant["name"],
+                                            isSelected:
+                                            taille == "XL"),
+                                      )
+                                          : Container()
+                                    /* Container(
                                   width: size.width / 2,
                                   height: 40,
                                   child: ListView.builder(
@@ -413,139 +420,138 @@ class _FoodScreenState extends State<FoodScreen> {
                                     },
                                   ),
                                 ), */
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      if (widget.data["extrasdata"].isNotEmpty)
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text("Supplements"),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
+
+                          SizedBox(
+                            height: 40,
+                          ),
+                          if (widget.data["extrasdata"].isNotEmpty)
                             Column(
-                              children: supplementItems.map((supplementItem) {
-                                return Column(
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    Text("Supplements"),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                Column(
+                                  children: supplementItems.map((supplementItem) {
+                                    return Column(
                                       children: [
-                                        Container(
-                                          width: 100,
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
+                                        SizedBox(height: 6),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              height: 40,
+                                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
                                                 BorderRadius.circular(20),
-                                            border: Border.all(
-                                              color: greyScale60Color,
-                                              width: 1.0,
-                                            ),
-                                            color: whiteColor,
-                                          ),
-                                          child: Center(
-                                            child: Row(
-                                              mainAxisAlignment:
+                                                border: Border.all(
+                                                  color: greyScale60Color,
+                                                  width: 1.0,
+                                                ),
+                                                color: whiteColor,
+                                              ),
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    supplementItem
-                                                        .decrementCount();
-                                                    setState(() {});
-                                                  },
-                                                  child: Icon(Icons.remove),
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        supplementItem
+                                                            .decrementCount();
+                                                        setState(() {});
+                                                      },
+                                                      child: Icon(Icons.remove),
+                                                    ),
+                                                    Text(
+                                                      '${supplementItem.count}',
+                                                      style: text16GrayScale100,
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        supplementItem
+                                                            .incrementCount();
+                                                        setState(() {});
+                                                      },
+                                                      child: Icon(Icons.add),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  '${supplementItem.count}',
-                                                  style: text16GrayScale100,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    supplementItem
-                                                        .incrementCount();
-                                                    setState(() {});
-                                                  },
-                                                  child: Icon(Icons.add),
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
+                                            Text(supplementItem.name),
+                                            Text("F ${supplementItem.totalPrice}"),
+                                          ],
                                         ),
-                                        Text(supplementItem.name),
-                                        Text("F ${supplementItem.totalPrice}"),
+                                        SizedBox(height: 6),
+                                        Divider(
+                                          color: greyScale70Color,
+                                          thickness: 1,
+                                        ),
                                       ],
-                                    ),
-                                    Divider(
-                                      color: greyScale70Color,
-                                      thickness: 1,
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            )
-                          ],
-                        ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Text("Notes"),
+                                    );
+                                  }).toList(),
+                                )
+                              ],
+                            ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            children: [
+                              Text("Notes"),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          TextField(
+
+                            controller: _noteEditingController,
+                            maxLines: 3, // Pour permettre plusieurs lignes
+                            decoration: InputDecoration(
+                              labelText:
+                              'Avez vous quelque chose à dire au restaurant?',
+                              fillColor: greyColor,
+                              labelStyle: TextStyle(fontSize: 14, color: greyScale700Color),
+                              filled: true,
+
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 60,
+                          ),
+                          addToCartBtn(size)
                         ],
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      TextField(
-                        controller: _noteEditingController,
-                        maxLines: 3, // Pour permettre plusieurs lignes
-                        decoration: InputDecoration(
-                          labelText:
-                              'Avez vous quelque chose à dire au restaurant?',
-                          fillColor: greyColor,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      addToCartBtn(size)
-                    ],
-                  ),
-                )
+                    )
+                  ],
+                ),
+
               ],
             ),
-            _loading
-                ? Center(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      height: size
-                          .height, // Ajustez la hauteur du loader selon vos besoins
-                      child: Center(
-                        child: SpinKitThreeBounce(
-                          color: primaryColor,
-                          size: 30.0,
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
-        ),
-      ),
+          ),
+          _loading
+              ? LoadingWidget()
+              : Container(),
+        ],
+      )
     );
   }
 }

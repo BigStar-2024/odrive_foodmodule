@@ -5,6 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:odrive/pages/auth/login.dart';
 
+import '../../components/appbar.dart';
+import '../../themes/theme.dart';
+
 class RestaurantInformationScreen extends StatefulWidget {
   dynamic restaurant;
   RestaurantInformationScreen({required this.restaurant});
@@ -28,7 +31,6 @@ class _RestaurantInformationScreenState
     bool closed = openTime.isEmpty || closeTime.isEmpty;
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -59,7 +61,6 @@ class _RestaurantInformationScreenState
                   color: Color(0xFF212121),
                   fontSize: 18,
                   fontFamily: 'Urbanist',
-                  fontWeight: FontWeight.w600,
                   letterSpacing: 0.20,
                 ),
               ),
@@ -155,7 +156,7 @@ class _RestaurantInformationScreenState
       appBar: MyAppBar(titleText: "Information du restaurant"),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
               Container(
@@ -171,16 +172,12 @@ class _RestaurantInformationScreenState
                   children: [
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          "assets/test/location.svg",
-                          width: 24,
-                          height: 24,
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: greyScale80Color,
+                          size: 24  ,
                         ),
-                        /* Icon(
-                          Icons.home_filled,
-                          color: secondaryColor,
-                          size: 40,
-                        ), */
+                        SizedBox(width: 2),
                         Text(shortenLocationName(
                             widget.restaurant["address"], 25))
                       ],
@@ -193,47 +190,49 @@ class _RestaurantInformationScreenState
               ),
               Divider(
                 height: 20, // hauteur de la ligne
-                thickness: 2, // épaisseur de la ligne
+                thickness: 1, // épaisseur de la ligne
                 color: Color(0xFFBFC6CC), // couleur de la ligne
               ),
-              SizedBox(
-                child: Text(
-                  'Nous concernant',
-                  style: TextStyle(
-                    color: Color(0xFF212121),
-                    fontSize: 16,
-                    fontFamily: 'Abel',
-                    fontWeight: FontWeight.w400,
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Text(
+                    'Nous concernant',
+                    style: TextStyle(
+                      color: Color(0xFF212121),
+                      fontSize: 16,
+                      fontFamily: 'Abel',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
+                ],
               ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                //width: 327,
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${widget.restaurant["desc"]}',
-                        style: TextStyle(
-                          color: Color(0xFF424242),
-                          fontSize: 14,
-                          fontFamily: 'Abel',
-                          fontWeight: FontWeight.w400,
+              SizedBox(height: 12),
+              Row(
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${widget.restaurant["desc"]}',
+                          style: TextStyle(
+                            color: Color(0xFF424242),
+                            fontSize: 14,
+                            fontFamily: 'Abel',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
               SizedBox(
                 height: 15,
               ),
               Divider(
                 height: 20, // hauteur de la ligne
-                thickness: 2, // épaisseur de la ligne
+                thickness: 1, // épaisseur de la ligne
                 color: Color(0xFFBFC6CC), // couleur de la ligne
               ),
               Container(
@@ -254,7 +253,7 @@ class _RestaurantInformationScreenState
               ),
               Divider(
                 height: 20, // hauteur de la ligne
-                thickness: 2, // épaisseur de la ligne
+                thickness: 1, // épaisseur de la ligne
                 color: Color(0xFFBFC6CC), // couleur de la ligne
               ),
               Container(
@@ -266,7 +265,6 @@ class _RestaurantInformationScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 124,
                       child: Text(
                         'Numéro du restaurant',
                         style: TextStyle(
@@ -279,7 +277,6 @@ class _RestaurantInformationScreenState
                     ),
                     const SizedBox(width: 143),
                     SizedBox(
-                      width: 89,
                       child: Text(
                         '${widget.restaurant["phone"]}',
                         style: TextStyle(

@@ -6,9 +6,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:odrive/backend/api.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/pages/suivie/suivie.dart';
 import 'package:odrive/themes/theme.dart';
+
+import '../../components/appbar.dart';
 
 class CommandesScreen extends StatefulWidget {
   const CommandesScreen({super.key});
@@ -57,11 +60,13 @@ class _CommandesScreenState extends State<CommandesScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: MyAppBar(titleText: "Commandes"),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              children: ordersData["data"]?.map<Widget>((foodItem) {
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Stack(
+              children: [
+                Column(
+                  children: ordersData["data"]?.map<Widget>((foodItem) {
                     return Card(
                       margin: EdgeInsets.all(16.0),
                       child: Padding(
@@ -95,28 +100,28 @@ class _CommandesScreenState extends State<CommandesScreen> {
                                     children: [
                                       SvgPicture.asset(
                                         foodItem["statusName"] ==
-                                                "Order Received"
+                                            "Order Received"
                                             ? "assets/suivi/order_receive.svg"
                                             : foodItem["statusName"] ==
-                                                    "Delivered"
-                                                ? "assets/suivi/success.svg"
-                                                : foodItem["statusName"] ==
-                                                        "Preparing"
-                                                    ? "assets/suivi/preparing.svg"
-                                                    : foodItem["statusName"] ==
-                                                            "Ready"
-                                                        ? "assets/suivi/order_receive.svg"
-                                                        : foodItem["statusName"] ==
-                                                                "On the Way"
-                                                            ? "assets/suivi/man.svg"
-                                                            : foodItem["statusName"] ==
-                                                                    "Canceled"
-                                                                ? "assets/suivi/cancel.svg"
-                                                                : "assets/suivi/order_receive.svg",
+                                            "Delivered"
+                                            ? "assets/suivi/success.svg"
+                                            : foodItem["statusName"] ==
+                                            "Preparing"
+                                            ? "assets/suivi/preparing.svg"
+                                            : foodItem["statusName"] ==
+                                            "Ready"
+                                            ? "assets/suivi/order_receive.svg"
+                                            : foodItem["statusName"] ==
+                                            "On the Way"
+                                            ? "assets/suivi/man.svg"
+                                            : foodItem["statusName"] ==
+                                            "Canceled"
+                                            ? "assets/suivi/cancel.svg"
+                                            : "assets/suivi/order_receive.svg",
                                         color:
-                                            foodItem["statusName"] == "Canceled"
-                                                ? errorColor
-                                                : successColor,
+                                        foodItem["statusName"] == "Canceled"
+                                            ? errorColor
+                                            : successColor,
                                         width: 24,
                                         height: 24,
                                       ),
@@ -156,16 +161,16 @@ class _CommandesScreenState extends State<CommandesScreen> {
                                   SizedBox(height: 8.0),
                                   Column(
                                     children: (foodItem["ordersdetails"]
-                                            as List<dynamic>)
+                                    as List<dynamic>)
                                         .where((foodItemDetail) =>
-                                            (foodItemDetail as Map<String,
-                                                dynamic>)["count"] >
-                                            0)
+                                    (foodItemDetail as Map<String,
+                                        dynamic>)["count"] >
+                                        0)
                                         .map((food) {
                                       return Row(
                                         children: [
                                           Text((food
-                                              as Map<String, dynamic>)["food"]),
+                                          as Map<String, dynamic>)["food"]),
                                           Text(
                                               "   X${(food as Map<String, dynamic>)["count"]}")
                                         ],
@@ -198,26 +203,16 @@ class _CommandesScreenState extends State<CommandesScreen> {
                       ),
                     );
                   }).toList() ??
-                  [],
+                      [],
+                ),
+              ],
             ),
-            _loading
-                ? Center(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      height: size
-                          .height, // Ajustez la hauteur du loader selon vos besoins
-                      child: Center(
-                        child: SpinKitThreeBounce(
-                          color: primaryColor,
-                          size: 30.0,
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
-        ),
-      ),
+          ),
+          _loading
+              ? LoadingWidget()
+              : Container(),
+        ],
+      )
     );
   }
 }

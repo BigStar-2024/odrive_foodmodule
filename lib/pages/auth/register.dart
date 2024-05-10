@@ -3,8 +3,14 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
+import 'package:odrive/components/loginbuttons.dart';
+import 'package:odrive/localization/Language/languages.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/themes/theme.dart';
+
+import '../../components/appbar.dart';
+import '../../components/roundedinput.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -24,7 +30,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _loading = false;
   bool _error = false;
 
-  String errorMessage = "Vérifiez tous les champs";
+  setLoading(bool status){
+    setState(() {
+      _loading = status;
+    });
+  }
+
   void _showSuccessDialog() {
     showDialog(
       context: context,
@@ -33,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return AlertDialog(
           title: Center(
             child: Text(
-              'Inscription réussite',
+              Languages.of(context)!.textRegisteredSuccess,
               style: text18Neutral,
             ),
           ),
@@ -52,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 15),
               Text(
-                'Votre numéro de téléphone a été enregistré avec succès.',
+                Languages.of(context)!.labelNumberAlreadyExist,
                 style: text16Neutral,
                 textAlign: TextAlign.center,
               ),
@@ -80,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Continuer sur la page d\'accueil',
+                Languages.of(context)!.labelContinueOnHomepage,
                 style: text16WhiteBold,
               ),
             ],
@@ -91,170 +102,79 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   connexionBtn(size) {
+    String errorMessage = Languages.of(context)!.labelCheckAllFields;
     return GestureDetector(
       onTap: () async {
-        setState(() {
-          _loading = true;
-        });
-        print("login");
-        if (connexion) {
-          if (phoneNumberController.text.isNotEmpty &&
-              passwordController.text.isNotEmpty &&
-              passwordConfirmController.text.isNotEmpty &&
-              nameController.text.isNotEmpty) {
-            dynamic response = await register(
-                emailController.text,
-                passwordController.text,
-                nameController.text,
-                phoneNumberController.text,
-                "phone",
-                "");
-            print("responssssssssssssseeeeeeeeeeee");
-            print(response);
-            print(
-                "Le type de myVariable est : ${response["error"].runtimeType}");
-            if (response["error"].toString() == "1") {
-              print("erreur-----------");
-              setState(() {
-                _error = true;
-              });
-            }
-            if (response["error"].toString() == "0") {
-              print("no error");
-              setState(() {
-                _error = false;
-              });
-              _showSuccessDialog();
-              //Navigator.pushReplacementNamed(context, '/accueil');
-
-            }
-            if (response["error"].toString() == "3") {
-              //print("no error");
-              setState(() {
-                errorMessage = "Ce numéro existe déja";
-                _error = true;
-              });
-            }
-          } else {
-            setState(() {
-              _error = true;
-            });
-          }
-        }
-        setState(() {
-          _loading = false;
-        });
+        print("verify_otp");
+        Navigator.pushNamed(context, '/verify_otp');
+        // setState(() {
+        //   _loading = true;
+        // });
+        // print("login");
+        // if (connexion) {
+        //   if (phoneNumberController.text.isNotEmpty &&
+        //       passwordController.text.isNotEmpty &&
+        //       passwordConfirmController.text.isNotEmpty &&
+        //       nameController.text.isNotEmpty) {
+        //     dynamic response = await register(
+        //         emailController.text,
+        //         passwordController.text,
+        //         nameController.text,
+        //         phoneNumberController.text,
+        //         "phone",
+        //         "");
+        //     print("responssssssssssssseeeeeeeeeeee");
+        //     print(response);
+        //     print(
+        //         "Le type de myVariable est : ${response["error"].runtimeType}");
+        //     if (response["error"].toString() == "1") {
+        //       print("erreur-----------");
+        //       setState(() {
+        //         _error = true;
+        //       });
+        //     }
+        //     if (response["error"].toString() == "0") {
+        //       print("no error");
+        //       setState(() {
+        //         _error = false;
+        //       });
+        //       _showSuccessDialog();
+        //       //Navigator.pushReplacementNamed(context, '/accueil');
+        //
+        //     }
+        //     if (response["error"].toString() == "3") {
+        //       //print("no error");
+        //       setState(() {
+        //         errorMessage = Languages.of(context)!.labelNumberAlreadyExist;
+        //         _error = true;
+        //       });
+        //     }
+        //   } else {
+        //     setState(() {
+        //       _error = true;
+        //     });
+        //   }
+        // }
+        // setState(() {
+        //   _loading = false;
+        // });
       },
       child: Container(
-        width: size.width - size.width / 5,
         height: 50,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: connexion ? primaryColor : greyScale30Color),
+            color: connexion ? Theme.of(context).primaryColor : MyAppColors.greyScale30Color),
         child: Center(
           child: Text(
-            'S\'inscrire',
-            style: connexion ? text16White : text16GrayScale90,
+            Languages.of(context)!.labelSignup,
+            style: connexion ? Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: Colors.white
+            ) : Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: MyAppColors.greyScale90Color
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  connexionFbBtn(size) {
-    return GestureDetector(
-      onTap: () {
-        //_showSuccessDialog();
-      },
-      child: Container(
-        width: size.width - size.width / 5,
-        height: 50,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Color(0xFF415792)),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons
-                    .facebook, // Remplacez par l'icône que vous souhaitez utiliser
-                color: Colors.white,
-              ),
-              SizedBox(width: 10),
-              Text(
-                'Continuer avec Facebook',
-                style: text16White,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  connexionGlBtn(size) {
-    return Container(
-      width: size.width - size.width / 5,
-      height: 50,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Color(0xFF5384EE)),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/auth/google.png"),
-            SizedBox(width: 10),
-            Text(
-              'Continuer avec Google',
-              style: text16White,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  connexionApBtn(size) {
-    return Container(
-      width: size.width - size.width / 5,
-      height: 50,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: blackColor),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/auth/apple.png"),
-            SizedBox(width: 10),
-            Text(
-              'Continuer avec Apple',
-              style: text16White,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  horizontalRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 100.0,
-          height: 1.0, // Hauteur de la première ligne horizontale
-          color: greyColor,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text('ou'),
-        ),
-        Container(
-          width: 100.0,
-          height: 1.0, // Hauteur de la deuxième ligne horizontale
-          color: greyColor,
-        ),
-      ],
     );
   }
 
@@ -262,144 +182,178 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: MyAppBar(
-        titleText: 'S\'inscrire',
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+      // appBar: MyAppBar(
+      //   titleText: Languages.of(context)!.labelSignup,
+      // ),SingleChildScrollView
+        backgroundColor:Theme.of(context).backgroundColor,
+      body: Stack(
+        children: [
+
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(fixPadding * 2.0),
+              child: Stack(
                 children: [
-                  Text(
-                    'Nom complet',
-                    style: text16GrayScale100,
-                  ),
-                  SizedBox(height: 15),
-                  RoundedTextField(
-                    hintText: 'Entrez votre nom complet',
-                    keyboardType: TextInputType.text,
-                    controller: nameController,
-                    error: _error,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Numero de téléphone',
-                    style: text16GrayScale100,
-                  ),
-                  SizedBox(height: 15),
-                  RoundedTextField(
-                    hintText: 'Entrez votre numéro de téléphone',
-                    keyboardType: TextInputType.phone,
-                    controller: phoneNumberController,
-                    error: _error,
-                  ),
-                  SizedBox(height: 25),
-                  Text(
-                    'Email',
-                    style: text16GrayScale100,
-                  ),
-                  SizedBox(height: 15),
-                  RoundedTextField(
-                    hintText: 'Entrez votre Email',
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailController,
-                    error: _error,
-                  ),
-                  SizedBox(height: 25),
-                  Text(
-                    'Mot de passe',
-                    style: text16GrayScale100,
-                  ),
-                  SizedBox(height: 8),
-                  RoundedPasswordField(
-                    hintText: 'Entrez votre mot de passe',
-                    controller: passwordController,
-                    onChanged: (value) {},
-                    error: _error,
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Text(
-                    'Confirmation de mot de passe',
-                    style: text16GrayScale100,
-                  ),
-                  SizedBox(height: 8),
-                  RoundedPasswordField(
-                    hintText: 'Confirmer votre mot de passe',
-                    controller: passwordConfirmController,
-                    onChanged: (value) {
-                      if (value.length > 0) {
-                        setState(() {
-                          connexion = true;
-                        });
-                      }
-                      if (value.length == 0) {
-                        setState(() {
-                          connexion = false;
-                        });
-                      }
-                    },
-                    error: _error,
-                  ),
-                  SizedBox(height: 10),
-                  _error
-                      ? Text(
-                          errorMessage,
-                          style: text16Error,
-                        )
-                      : Container(),
-                  SizedBox(height: 50),
-                  connexionBtn(size),
-                  SizedBox(height: 20),
-                  horizontalRow(),
-                  SizedBox(height: 20),
-                  connexionGlBtn(size),
-                  SizedBox(height: 10),
-                  connexionFbBtn(size),
-                  SizedBox(height: 10),
-                  connexionApBtn(size),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "déja inscrit?",
-                        style: text14GrayScale100,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/login');
-                          },
-                          child: Text(
-                            "Se connecter",
-                            style: text14WhitePrimary,
-                          ))
-                    ],
-                  )
-                ],
-              ),
-              _loading
-                  ? Center(
-                      child: Container(
-                        color: Colors.black.withOpacity(0.5),
-                        height: size
-                            .height, // Ajustez la hauteur du loader selon vos besoins
-                        child: Center(
-                          child: SpinKitThreeBounce(
-                            color: primaryColor,
-                            size: 30.0,
+                      SizedBox(height: 32),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/splash/tyms.png",
+                            height: size.height * 0.1,
+                            fit: BoxFit.cover,
                           ),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Text(
+                        Languages.of(context)!.labelFullName,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
                         ),
                       ),
-                    )
-                  : Container(),
-            ],
+                      SizedBox(height: 15),
+                      RoundedTextField(
+                        hintText: Languages.of(context)!.labelPlaceholderFullName,
+                        keyboardType: TextInputType.text,
+                        controller: nameController,
+                        error: _error,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        Languages.of(context)!.labelPhone,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      RoundedTextField(
+                        hintText: Languages.of(context)!.labelPlaceholderPhoneNumber,
+                        keyboardType: TextInputType.phone,
+                        controller: phoneNumberController,
+                        error: _error,
+                      ),
+                      SizedBox(height: 25),
+                      Text(
+                        Languages.of(context)!.labelEmail,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      RoundedTextField(
+                        hintText: Languages.of(context)!.labelPlaceholderEmail,
+                        keyboardType: TextInputType.emailAddress,
+                        controller: emailController,
+                        error: _error,
+                      ),
+                      SizedBox(height: 25),
+                      Text(
+                        Languages.of(context)!.labelPassword,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      RoundedPasswordField(
+                        hintText: Languages.of(context)!.labelPlaceholderPassword,
+                        controller: passwordController,
+                        onChanged: (value) {},
+                        error: _error,
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Text(
+                        Languages.of(context)!.labelPasswordConfirm,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      RoundedPasswordField(
+                        hintText: Languages.of(context)!.labelPlaceholderPasswordConfirm,
+                        controller: passwordConfirmController,
+                        onChanged: (value) {
+                          if (value.length > 0) {
+                            setState(() {
+                              connexion = true;
+                            });
+                          }
+                          if (value.length == 0) {
+                            setState(() {
+                              connexion = false;
+                            });
+                          }
+                        },
+                        error: _error,
+                      ),
+                      SizedBox(height: 10),
+                      _error
+                          ? Text(
+                        Languages.of(context)!.labelCheckAllFields,
+                        style: text16Error,
+                      )
+                          : Container(),
+                      SizedBox(height: 50),
+                      connexionBtn(size),
+                      heightSpace,
+                      heightSpace,
+                      LoginButtonsWidget(setLoading: setLoading),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            Languages.of(context)!.textAlreadyRegistered,
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(context, '/login');
+                              },
+                              child: Text(
+                                Languages.of(context)!.textToLogin,
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    decoration: TextDecoration.underline
+                                ),
+                              ))
+                        ],
+                      ),
+                      SizedBox(height: 64),
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+          Positioned(
+            top: 0,
+            right: 0,
+            height: 300,
+            child: Image.asset(
+              'assets/auth/topshape.png', // Replace with your image asset
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            width: size.width,
+            child: Image.asset(
+              'assets/auth/bottomshape.png', // Replace with your image asset
+              fit: BoxFit.cover,
+            ),
+          ),
+          _loading
+              ? LoadingWidget()
+              : Container(),
+        ],
+      )
     );
   }
 }

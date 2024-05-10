@@ -5,6 +5,8 @@ import 'package:odrive/backend/api.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:http/http.dart' as http;
 
+import '../../components/appbar.dart';
+
 class RestaurantMap extends StatelessWidget {
   final List<dynamic> restaurants;
   final double defaultLat;

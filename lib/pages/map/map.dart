@@ -7,6 +7,8 @@ import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/appbar.dart';
+
 const kGoogleApiKey = googleApiKey;
 
 class MapScreen extends StatefulWidget {

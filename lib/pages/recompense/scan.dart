@@ -6,6 +6,8 @@ import 'package:odrive/pages/auth/login.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/appbar.dart';
+
 class ScanScreen extends StatefulWidget {
   String uuid;
   int pointTransfert;

@@ -128,6 +128,38 @@ register(
   }
 }
 
+googleLogin(String token) async {
+  try {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': "application/json",
+    };
+
+    var url = "${serverPath}google?token=$token";
+    var response = await http
+        .get(
+      Uri.parse(url),
+      headers: requestHeaders,
+    ).timeout(const Duration(seconds: 30));
+
+    if (response.statusCode == 200) {
+      var jsonResult = json.decode(response.body);
+      if (jsonResult['error'] == 0) {
+        var userData = jsonResult['user'];
+        var uuid = jsonResult['access_token'];
+        saveUserDataToSharedPreferences(userData, password, uuid);
+        return jsonResult;
+      } else {
+        return jsonResult;
+      }
+    } else {
+      return json.decode(response.body);
+    }
+  } catch (ex) {
+    print(ex);
+  }
+}
+
 getMain() async {
   try {
     Map<String, String> requestHeaders = {
@@ -240,6 +272,32 @@ getRestaurant(String id) async {
       } else {
         return {"error": jsonResult['error']};
       }
+    } else {
+      return {"error": response.statusCode};
+    }
+  } catch (ex) {
+    print(ex);
+  }
+}
+
+getStatusRestaurant(String id) async {
+  // if (_currentId == id)
+  //   return callback(_currentRet);
+
+  try {
+    var url = "${serverPath}getStatusByRestaurant?restaurant=$id";
+    var response = await http.get(Uri.parse(url), headers: {
+      'Content-type': 'application/json',
+      'Accept': "application/json",
+    }).timeout(const Duration(seconds: 30));
+
+    print(url);
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResult = json.decode(response.body);
+      return jsonResult;
     } else {
       return {"error": response.statusCode};
     }
@@ -2189,6 +2247,42 @@ cancelOrder(int order_id) async {
       } else {
         return {"error": jsonResult['error']};
       }
+    } else {
+      return {"error": response.statusCode};
+    }
+  } catch (ex) {
+    print(ex);
+  }
+}
+
+setFriendInformation(int order_id, String fname, String fnumber) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String uuid = prefs.getString("uuid") ?? "";
+  try {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': "application/json",
+      'Authorization': "Bearer $uuid",
+    };
+
+    Map<String, dynamic> body = {'order': order_id, 'friend_name': fname, 'friend_number':fnumber};
+
+    print('body: $body');
+    var url = "${serverPath}setFriendInformation";
+    var response = await http
+        .post(Uri.parse(url), headers: requestHeaders, body: jsonEncode(body))
+        .timeout(const Duration(seconds: 30));
+
+    print("setFriendInformation");
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 401)
+      return {"error": "une erreur s'est produite"};
+    if (response.statusCode == 200) {
+      var jsonResult = json.decode(response.body);
+      jsonResult['error'] = '0';
+      return jsonResult;
     } else {
       return {"error": response.statusCode};
     }

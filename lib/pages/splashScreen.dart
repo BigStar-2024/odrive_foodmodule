@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:odrive/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../localization/Language/languages.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -44,22 +46,11 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             const Spacer(),
             Image.asset(
-              "assets/splash/odrive_1.png",
-              height: size.height * 0.1,
+              "assets/splash/tyms.png",
+              height: size.height * 0.2,
               fit: BoxFit.cover,
             ),
-            heightSpace,
-            const Text(
-              "O'drive",
-              style: text24BoldPrimary,
-            ),
             const Spacer(),
-            /* const Spacer(),
-            const Text(
-              "APPLICATION UTILISATEUR",
-              style: semibold12Grey,
-            ),
-            heightSpace, */
           ],
         ),
       ),

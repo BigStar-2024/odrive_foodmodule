@@ -10,6 +10,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/buttoncheckout.dart';
+import 'package:odrive/components/loading.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/pages/commande/commandes.dart';
 import 'package:odrive/pages/favorite/favorite.dart';
@@ -20,6 +22,9 @@ import 'package:odrive/themes/theme.dart';
 import 'package:odrive/widget/haversine.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../components/appbar.dart';
+import '../../components/dashedborderpainter.dart';
 
 class RecompenseScreen extends StatefulWidget {
   final PointsUpdateNotifier notifier;
@@ -442,19 +447,7 @@ class _RecompenseScreenState extends State<RecompenseScreen> {
     return Scaffold(
       appBar: MyAppBar(titleText: "Echange de recompense"),
       body: _loading
-          ? Center(
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
-                height: size
-                    .height, // Ajustez la hauteur du loader selon vos besoins
-                child: Center(
-                  child: SpinKitThreeBounce(
-                    color: primaryColor,
-                    size: 30.0,
-                  ),
-                ),
-              ),
-            )
+          ? LoadingWidget()
           : Stack(
               children: [
                 SingleChildScrollView(
@@ -610,14 +603,15 @@ class _RecompenseScreenState extends State<RecompenseScreen> {
                                       },
                                       child: Container(
                                         width: 126.64,
-                                        height: 40,
+                                        height: 50,
+                                        // color: Colors.white,
                                         padding: const EdgeInsets.only(
                                             left: 12, right: 8),
                                         decoration: ShapeDecoration(
                                           color: Color(0xFF332C45),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(23),
+                                                BorderRadius.circular(25),
                                           ),
                                         ),
                                         child: Row(
@@ -635,13 +629,12 @@ class _RecompenseScreenState extends State<RecompenseScreen> {
                                                 fontSize: 16,
                                                 fontFamily: 'Abel',
                                                 fontWeight: FontWeight.w400,
-                                                height: 0.09,
                                               ),
                                             ),
                                             const SizedBox(width: 4),
                                             Flexible(
                                               child: Container(
-                                                width: 43.64,
+
                                                 height: 36,
                                                 decoration: BoxDecoration(
                                                   image: DecorationImage(
@@ -1604,8 +1597,78 @@ String getCurrentMonthName(String exchangeName) {
 class AutoLayoutHorizontal extends StatelessWidget {
   String uuid;
   AutoLayoutHorizontal({required this.uuid});
+
   @override
   Widget build(BuildContext context) {
+    void QRDialog(String qrData) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0), // Arrondir les coins
+            ),
+            elevation: 0, // Supprimer l'ombre
+            backgroundColor: Colors.transparent, // Fond transparent
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 16),
+                  Row(children: [
+                    Expanded(
+                      child: Text(
+                        'Please scan the QR code to accumulate points',
+                        textAlign: TextAlign.center,
+                        style: text24GreyScale100,
+                      ),
+                    ),
+                  ]),
+                  const SizedBox(height: 16),
+                  Container(
+                    width: 250,
+                    height: 250,
+                    padding: EdgeInsets.all(4),
+                    child: CustomPaint(
+                      painter: DashedBorderPainter(),
+                      child: Center(
+                        child: PrettyQr(
+                          data: qrData,
+                          size: 200,
+                          elementColor: Colors.black,
+                          errorCorrectLevel: QrErrorCorrectLevel.L,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    //width: double.infinity,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'QR code will be updated every 60s',
+                            textAlign: TextAlign.center,
+                            style: text14GrayScale900,
+                          ),
+                        ),
+                      ]),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Column(
       children: [
         Container(
@@ -1654,12 +1717,17 @@ class AutoLayoutHorizontal extends StatelessWidget {
                             child: Container(
                               width: 55,
                               height: 55,
-                              child: PrettyQr(
-                                data: uuid,
-                                size: 55,
-                                elementColor: successColor,
-                                errorCorrectLevel: QrErrorCorrectLevel.L,
-                              ),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  QRDialog(uuid);
+                                },
+                                child: PrettyQr(
+                                  data: uuid,
+                                  size: 55,
+                                  elementColor: successColor,
+                                  errorCorrectLevel: QrErrorCorrectLevel.L,
+                                ),
+                              )
                               /* decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: NetworkImage(

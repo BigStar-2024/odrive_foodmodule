@@ -27,3 +27,28 @@ bool validateEmail(String value) {
   else
     return true;
 }
+
+String sliceString(String input, int length) {
+  if (input.length > length) {
+    return input.substring(0, length) + "..";
+  } else {
+    return input;
+  }
+}
+
+String shortenLocationName(String locationName, int maxLength) {
+  if (locationName.length <= maxLength) {
+    return locationName;
+  } else {
+    return locationName.substring(0, maxLength - 3) + '...';
+  }
+}
+
+String maskHiddenString(String input) {
+  if (input.length <= 4) {
+    return input;
+  }
+  String masked = '*' * (input.length - 4);
+  masked += input.substring(input.length - 4);
+  return masked;
+}

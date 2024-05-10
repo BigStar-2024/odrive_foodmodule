@@ -3,11 +3,15 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:odrive/backend/api.dart';
 import 'package:odrive/backend/api_calls.dart';
+import 'package:odrive/components/loading.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/themes/theme.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
+import '../../components/appbar.dart';
 
 class ReviewsScreen extends StatefulWidget {
   final idRestaurant;
@@ -154,6 +158,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           restaurantReviews.isNotEmpty
               ? SingleChildScrollView(
                   child: Container(
+                    padding: EdgeInsets.all(24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -161,12 +166,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       children: [
                         Container(
                           //height: 254,
+                          // color: Color(0xFFF2F2F2),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 24, vertical: 12),
                           decoration: ShapeDecoration(
                             color: Color(0xFFF2F2F2),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius:
+                              BorderRadius.circular(20),
                             ),
                           ),
                           child: Column(
@@ -210,6 +217,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                         ],
                                       ),
                                     ),
+                                    SizedBox(height: 6),
                                     SizedBox(
                                       width: double.infinity,
                                       height: 22,
@@ -537,9 +545,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                width: 327,
                                 child: Row(
-                                  mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -600,30 +606,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                             ),
                                             const SizedBox(width: 8),
                                             Container(
-                                              width: 12,
-                                              height: 12,
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    width: 12,
-                                                    height: 12,
-                                                    child: Stack(children: [
-                                                      Icon(
-                                                        sortByStarAscending
-                                                            ? Icons
-                                                                .arrow_drop_up
-                                                            : Icons
-                                                                .arrow_drop_down,
-                                                      )
-                                                    ]),
-                                                  ),
-                                                ],
-                                              ),
+                                              child: Icon(
+                                                sortByStarAscending
+                                                    ? Icons
+                                                    .keyboard_arrow_down_outlined
+                                                    : Icons
+                                                    .keyboard_arrow_up_outlined,
+                                              )
                                             )
                                           ],
                                         ),
@@ -654,8 +643,8 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Container(
-                                              width: 20,
-                                              height: 20,
+                                              width: 24,
+                                              height: 24,
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 mainAxisAlignment:
@@ -664,13 +653,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Container(
-                                                    width: 20,
-                                                    height: 20,
+                                                    width: 24,
+                                                    height: 24,
                                                     child: Stack(
                                                       children: [
                                                         Positioned(
                                                           left: 2.51,
-                                                          top: 2.50,
+                                                          top: 4.5,
                                                           child: Container(
                                                             width: 14.98,
                                                             height: 15,
@@ -717,223 +706,217 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                   child: Column(
                                 children: restaurantReviews.map((review) {
                                   return Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          width: 45,
-                                          height: 45,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                left: 0,
-                                                top: 0,
-                                                child: Container(
-                                                  width: 45,
-                                                  height: 45,
-                                                  decoration: ShapeDecoration(
-                                                    color: Color(0xFFC4C4C4),
-                                                    shape: CircleBorder(),
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                left: 0,
-                                                top: 0,
-                                                child: Container(
-                                                  width: 45,
-                                                  height: 45,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          '${serverImages}/${review["image"]}'),
-                                                      fit: BoxFit.fill,
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 45,
+                                              height: 45,
+                                              child: Stack(
+                                                children: [
+                                                  Positioned(
+                                                    left: 0,
+                                                    top: 0,
+                                                    child: CircleAvatar(
+                                                      radius: 22.5,
+                                                      backgroundColor: Colors.green,
+                                                      child: CircleAvatar(
+                                                        radius: 21,
+                                                        backgroundImage: NetworkImage(
+                                                            "${serverImages}/${review["image"]}"),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 16),
-                                        Container(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
+                                            ),
+                                            const SizedBox(width: 16),
+                                            Container(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
                                                 MainAxisAlignment.start,
-                                            crossAxisAlignment:
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 266,
-                                                child: Row(
-                                                  mainAxisSize:
+                                                children: [
+                                                  Container(
+                                                    width: 266,
+                                                    child: Row(
+                                                      mainAxisSize:
                                                       MainAxisSize.min,
-                                                  mainAxisAlignment:
+                                                      mainAxisAlignment:
                                                       MainAxisAlignment.start,
-                                                  crossAxisAlignment:
+                                                      crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: 136,
-                                                      child: Column(
-                                                        mainAxisSize:
+                                                      children: [
+                                                        Container(
+                                                          width: 136,
+                                                          child: Column(
+                                                            mainAxisSize:
                                                             MainAxisSize.min,
-                                                        mainAxisAlignment:
+                                                            mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .start,
-                                                        crossAxisAlignment:
+                                                            crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
-                                                        children: [
-                                                          SizedBox(
-                                                            width:
+                                                            children: [
+                                                              SizedBox(
+                                                                width:
                                                                 double.infinity,
-                                                            child: Text(
-                                                              review["name"],
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xFF171725),
-                                                                fontSize: 18,
-                                                                fontFamily:
+                                                                child: Text(
+                                                                  review["name"],
+                                                                  style: TextStyle(
+                                                                    color: Color(
+                                                                        0xFF171725),
+                                                                    fontSize: 18,
+                                                                    fontFamily:
                                                                     'Abel',
-                                                                fontWeight:
+                                                                    fontWeight:
                                                                     FontWeight
                                                                         .w400,
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            child: Row(
-                                                              mainAxisSize:
+                                                              Container(
+                                                                child: Row(
+                                                                  mainAxisSize:
                                                                   MainAxisSize
                                                                       .min,
-                                                              mainAxisAlignment:
+                                                                  mainAxisAlignment:
                                                                   MainAxisAlignment
                                                                       .start,
-                                                              crossAxisAlignment:
+                                                                  crossAxisAlignment:
                                                                   CrossAxisAlignment
                                                                       .start,
-                                                              children: [
-                                                                for (var i = 0;
+                                                                  children: [
+                                                                    for (var i = 0;
                                                                     i <
                                                                         int.parse(
                                                                             review["rate"]);
                                                                     i++)
-                                                                  Container(
-                                                                    width: 24,
-                                                                    height: 24,
-                                                                    child: Row(
-                                                                      mainAxisSize:
+                                                                      Container(
+                                                                        width: 24,
+                                                                        height: 24,
+                                                                        child: Row(
+                                                                          mainAxisSize:
                                                                           MainAxisSize
                                                                               .min,
-                                                                      mainAxisAlignment:
+                                                                          mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .center,
-                                                                      crossAxisAlignment:
+                                                                          crossAxisAlignment:
                                                                           CrossAxisAlignment
                                                                               .center,
-                                                                      children: [
-                                                                        Container(
-                                                                          width:
+                                                                          children: [
+                                                                            Container(
+                                                                              width:
                                                                               24,
-                                                                          height:
+                                                                              height:
                                                                               24,
-                                                                          decoration:
+                                                                              decoration:
                                                                               BoxDecoration(
-                                                                            image:
+                                                                                image:
                                                                                 DecorationImage(
-                                                                              image: AssetImage("assets/review/Star.png"),
-                                                                              fit: BoxFit.fill,
+                                                                                  image: AssetImage("assets/review/Star.png"),
+                                                                                  fit: BoxFit.fill,
+                                                                                ),
+                                                                              ),
                                                                             ),
-                                                                          ),
+                                                                          ],
                                                                         ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                for (var i = int
+                                                                      ),
+                                                                    for (var i = int
                                                                         .parse(review[
-                                                                            "rate"]);
+                                                                    "rate"]);
                                                                     i < 5;
                                                                     i++)
-                                                                  Container(
-                                                                    width: 24,
-                                                                    height: 24,
-                                                                    child: Row(
-                                                                      mainAxisSize:
+                                                                      Container(
+                                                                        width: 24,
+                                                                        height: 24,
+                                                                        child: Row(
+                                                                          mainAxisSize:
                                                                           MainAxisSize
                                                                               .min,
-                                                                      mainAxisAlignment:
+                                                                          mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .center,
-                                                                      crossAxisAlignment:
+                                                                          crossAxisAlignment:
                                                                           CrossAxisAlignment
                                                                               .center,
-                                                                      children: [
-                                                                        Container(
-                                                                          width:
+                                                                          children: [
+                                                                            Container(
+                                                                              width:
                                                                               24,
-                                                                          height:
+                                                                              height:
                                                                               24,
-                                                                          decoration:
+                                                                              decoration:
                                                                               BoxDecoration(
-                                                                            image:
+                                                                                image:
                                                                                 DecorationImage(
-                                                                              image: AssetImage("assets/review/StarVide.png"),
-                                                                              fit: BoxFit.fill,
+                                                                                  image: AssetImage("assets/review/StarVide.png"),
+                                                                                  fit: BoxFit.fill,
+                                                                                ),
+                                                                              ),
                                                                             ),
-                                                                          ),
+                                                                          ],
                                                                         ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 48),
-                                                    Expanded(
-                                                      child: SizedBox(
-                                                        child: Text(
-                                                          review["created_at"],
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFF9CA4AB),
-                                                            fontSize: 14,
-                                                            fontFamily: 'Abel',
-                                                            fontWeight:
-                                                                FontWeight.w400,
+                                                                      ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
+                                                        const SizedBox(width: 48),
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Text(
+                                                              getFormattedDate(review["created_at"]),
+                                                              style: TextStyle(
+                                                                color: Color(
+                                                                    0xFF9CA4AB),
+                                                                fontSize: 14,
+                                                                fontFamily: 'Abel',
+                                                                fontWeight:
+                                                                FontWeight.w400,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 12),
+                                                  SizedBox(
+                                                    width: 266,
+                                                    child: Text(
+                                                      review["desc"],
+                                                      style: TextStyle(
+                                                        color: Color(0xFF171725),
+                                                        fontSize: 14,
+                                                        fontFamily: 'Abel',
+                                                        fontWeight: FontWeight.w400,
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const SizedBox(height: 12),
-                                              SizedBox(
-                                                width: 266,
-                                                child: Text(
-                                                  review["desc"],
-                                                  style: TextStyle(
-                                                    color: Color(0xFF171725),
-                                                    fontSize: 14,
-                                                    fontFamily: 'Abel',
-                                                    fontWeight: FontWeight.w400,
                                                   ),
-                                                ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
+                                        ),
+                                        Divider(
+                                          color: greyColor900, // Couleur de la ligne
+                                          thickness: 1, // Épaisseur de la ligne
                                         ),
                                       ],
-                                    ),
+                                    )
+                                    // child:
                                   );
                                 }).toList(),
                               )),
@@ -983,22 +966,15 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   ),
                 ),
           _loading
-              ? Center(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.5),
-                    height: size
-                        .height, // Ajustez la hauteur du loader selon vos besoins
-                    child: Center(
-                      child: SpinKitThreeBounce(
-                        color: primaryColor,
-                        size: 30.0,
-                      ),
-                    ),
-                  ),
-                )
+              ? LoadingWidget()
               : Container(),
         ],
       ),
     );
   }
+}
+
+String getFormattedDate(String date){
+  DateTime dateObject = DateTime.parse(date);
+  return DateFormat('MM/dd/yyyy').format(dateObject);
 }

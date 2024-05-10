@@ -15,6 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:odrive/backend/api.dart';
 import 'package:odrive/backend/api_calls.dart';
 import 'package:odrive/constante/const.dart';
+import 'package:odrive/pages/call/call.dart';
 import 'package:odrive/pages/message/message.dart';
 import 'package:odrive/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -432,6 +433,9 @@ class _SuivieLivreurState extends State<SuivieLivreur> {
   }
 
   Widget buildBottomSheetContent(driverData, estimatedTimeInSeconds, temps) {
+    String imageUrl = driverData != null
+        ? "$serverImages${driverData["profil"]}"
+        : "https://via.placeholder.com/52x52";
     return Container(
       //width: 375,
       //height: 308,
@@ -477,9 +481,7 @@ class _SuivieLivreurState extends State<SuivieLivreur> {
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(driverData != null
-                          ? "$serverImages${driverData["profil"]}"
-                          : "https://via.placeholder.com/52x52"),
+                      image: NetworkImage(imageUrl),
                       fit: BoxFit.fill,
                     ),
                     shape: RoundedRectangleBorder(
@@ -529,7 +531,11 @@ class _SuivieLivreurState extends State<SuivieLivreur> {
                 ),
                 InkWell(
                     onTap: () {
-                      _phoneCall(driverData["phone"]);
+                      // _phoneCall(driverData["phone"]);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CallScreen(imageUrl: imageUrl)));
                     },
                     child: SvgPicture.asset("assets/suivi_livreur/call.svg")),
                 SizedBox(

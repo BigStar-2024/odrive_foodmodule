@@ -4,6 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:odrive/pages/auth/login.dart';
 
+import '../../components/appbar.dart';
+import '../../themes/theme.dart';
+
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
 
@@ -16,18 +19,17 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(titleText: "Message"),
-      body: SingleChildScrollView(),
-      floatingActionButton: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        //crossAxisAlignment: CrossAxisAlignment.center,
+      appBar: MessageAppBar(titleText: "Message"),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Expanded(child: Center(child: Text("No message"))),
           Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              //crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: 24,
@@ -40,9 +42,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       Container(
                         width: 24,
                         height: 24,
-                        child: Stack(children: [
-                          SvgPicture.asset('assets/message/camera.svg')
-                        ]),
+                        child: Icon(Icons.camera_alt_rounded, color: greyColor800),
                       ),
                     ],
                   ),
@@ -59,35 +59,37 @@ class _MessageScreenState extends State<MessageScreen> {
                       Container(
                         width: 24,
                         height: 24,
-                        child: Stack(children: [
-                          SvgPicture.asset('assets/message/image.svg')
-                        ]),
+                        child: Icon(Icons.photo_rounded, color: greyColor800),
                       ),
                     ],
                   ),
                 ),
+                SizedBox(width: 8),
                 //Champs input text ici
-                Flexible(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width - 100,
-                    height: MediaQuery.of(context).size.height / 17,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFF2F2F2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                      ),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Entrez votre message...',
-                        //border: OutlineInputBorder(),
-                      ),
+                Expanded(child:
+                Container(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFF2F2F2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
                     ),
                   ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Entrez votre message...',
+                      border: InputBorder.none
+                    ),
+                  ),
+                )
                 ),
-                SvgPicture.asset("assets/message/send.svg")
+                SizedBox(width: 8),
+                Icon(
+                  Icons.send
+                ),
+                // SvgPicture.asset("assets/message/send.svg"),
+                SizedBox(width: 8),
                 /* Row(
                     // Utilise la largeur de l'écran
                     children: [
@@ -167,9 +169,45 @@ class _MessageScreenState extends State<MessageScreen> {
                 ) */
               ],
             ),
-          ),
-        ],
+          )
+                  ],
+      )
+    );
+  }
+}
+
+class MessageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String titleText;
+  MessageAppBar({required this.titleText});
+  @override
+  Size get preferredSize => Size.fromHeight(60);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 3,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new, color: greyScale90Color),
+        onPressed: () {
+          // Action à effectuer lorsqu'on appuie sur la flèche de retour
+          Navigator.pop(context);
+        },
       ),
+      centerTitle: true,
+      title: Text(
+        titleText,
+        style: text20GrayScale100,
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.call, color: Colors.black),
+          tooltip: "Call",
+          onPressed: (){
+
+          },
+        )
+      ],
     );
   }
 }

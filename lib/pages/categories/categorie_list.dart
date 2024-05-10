@@ -4,6 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:odrive/pages/auth/login.dart';
 import 'package:odrive/pages/home/home.dart';
 
+import '../../components/appbar.dart';
+import '../../components/imagecard.dart';
+
 class CategorieListScreen extends StatefulWidget {
   List<dynamic> categorieList;
   CategorieListScreen({required this.categorieList});
